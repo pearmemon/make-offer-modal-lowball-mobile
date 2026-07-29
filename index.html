@@ -58,17 +58,10 @@
 
     #root {
       perspective: 1000px;
-    }
-
-    .mobile-frame {
-      background: #fff;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-      aspect-ratio: 9 / 16;
       display: flex;
-      flex-direction: column;
-      max-height: 80vh;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
   </style>
 </head>
@@ -76,10 +69,7 @@
 
   <div class="demo-container">
     <h1>Make an Offer Modal - Mobile</h1>
-    <div class="toggle-container" id="toggle-container"></div>
-    <div class="mobile-frame">
-      <div id="root"></div>
-    </div>
+    <div id="root"></div>
   </div>
 
   <script type="text/babel">
@@ -314,27 +304,21 @@
 
     const styles = {
       overlay: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         display: 'flex',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 1000,
+        width: '100%',
       },
       modal: {
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#fff',
+        boxShadow: '1px 2px 8px rgba(0, 0, 0, 0.25)',
         width: '100%',
-        maxWidth: '100vw',
-        borderTopLeftRadius: '16px',
-        borderTopRightRadius: '16px',
-        maxHeight: '90vh',
+        maxWidth: '428px',
+        borderRadius: '0',
+        maxHeight: '80vh',
         overflow: 'hidden',
+        backgroundColor: '#fff',
       },
       header: {
         position: 'relative',
@@ -582,47 +566,44 @@
       },
     };
 
-    const App = () => {
+    const App = ({ lowballMode }) => {
+      return (
+        <MakeOfferModal
+          listPrice={4396}
+          minAcceptableOffPercent={60}
+          recommendedOffPercent={5}
+          lowballMode={lowballMode}
+          onClose={() => console.log('closed')}
+          onSubmit={(data) => console.log('submitted:', data)}
+        />
+      );
+    };
+
+    const MainApp = () => {
       const [lowballMode, setLowballMode] = useState('block');
 
       return (
         <>
-          <MakeOfferModal
-            listPrice={4396}
-            minAcceptableOffPercent={60}
-            recommendedOffPercent={5}
-            lowballMode={lowballMode}
-            onClose={() => console.log('closed')}
-            onSubmit={(data) => console.log('submitted:', data)}
-          />
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', justifyContent: 'center' }}>
+            <button
+              className={`toggle-btn ${lowballMode === 'block' ? 'active' : ''}`}
+              onClick={() => setLowballMode('block')}
+            >
+              Lowball Block
+            </button>
+            <button
+              className={`toggle-btn ${lowballMode === 'nudge' ? 'active' : ''}`}
+              onClick={() => setLowballMode('nudge')}
+            >
+              Lowball Nudge
+            </button>
+          </div>
+          <App lowballMode={lowballMode} />
         </>
       );
     };
 
-    const ToggleContainer = () => {
-      const [lowballMode, setLowballMode] = useState('block');
-
-      return (
-        <>
-          <button
-            className={`toggle-btn ${lowballMode === 'block' ? 'active' : ''}`}
-            onClick={() => setLowballMode('block')}
-          >
-            Lowball Block
-          </button>
-          <button
-            className={`toggle-btn ${lowballMode === 'nudge' ? 'active' : ''}`}
-            onClick={() => setLowballMode('nudge')}
-          >
-            Lowball Nudge
-          </button>
-          <div style={{ display: 'none' }} id="mode-indicator">{lowballMode}</div>
-        </>
-      );
-    };
-
-    ReactDOM.createRoot(document.getElementById('toggle-container')).render(<ToggleContainer />);
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    ReactDOM.createRoot(document.getElementById('root')).render(<MainApp />);
   </script>
 </body>
 </html>
