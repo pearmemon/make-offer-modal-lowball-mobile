@@ -255,18 +255,16 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({
 const styles: { [key: string]: React.CSSProperties } = {
   overlay: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
     width: '100%',
+    maxWidth: '393px',
   },
   modal: {
     display: 'flex',
     flexDirection: 'column',
     boxShadow: '1px 2px 8px rgba(0, 0, 0, 0.25)',
     width: '100%',
-    maxWidth: '393px',
+    height: '844px',
     borderRadius: '0',
-    maxHeight: '844px',
     overflow: 'hidden',
     backgroundColor: '#fff',
   },
